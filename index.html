@@ -27,6 +27,21 @@ svg{display:block}
 
 /* kiss canvas */
 #cv{position:fixed;inset:0;z-index:1;touch-action:none;user-select:none;-webkit-user-select:none;cursor:crosshair}
+#hv{position:fixed;inset:0;z-index:1;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+#cv,#hv{transition:opacity .9s ease,visibility 0s}
+.hid{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .9s ease,visibility 0s .9s!important}
+#hl{z-index:1}
+.hg{position:absolute;width:200px;height:200px;margin:-100px 0 0 -100px;border-radius:50%;background:radial-gradient(circle,rgba(255,110,185,.75),rgba(255,79,163,.28) 45%,transparent 70%);filter:blur(6px);opacity:0;transform:scale(.3);pointer-events:none;transition:transform 7s cubic-bezier(.2,.6,.3,1),opacity 1.4s ease}
+.hg.hold{opacity:.9;transform:scale(1.7)}
+.hg.done{opacity:0;transform:scale(2.8);transition:transform 9s ease-out,opacity 9s ease-in}
+.hr{position:absolute;width:300px;height:300px;margin:-150px 0 0 -150px;border-radius:50%;border:1px solid var(--rose);box-shadow:0 0 14px rgba(255,79,163,.6),inset 0 0 14px rgba(255,79,163,.25);pointer-events:none;animation:hin 1.7s cubic-bezier(.4,0,.6,1) forwards}
+@keyframes hin{0%{transform:scale(1);opacity:0}25%{opacity:.7}100%{transform:scale(.12);opacity:0}}
+.hh{position:absolute;width:22px;height:22px;margin:-11px;color:#ffd1e8;filter:drop-shadow(0 0 10px var(--pink));pointer-events:none;animation:beat 1.4s ease-in-out infinite}
+.hh svg{width:100%;height:100%}
+#switch{top:calc(env(safe-area-inset-top,0px) + 10px);left:6px;display:flex;align-items:center}
+#switch button{padding:14px 10px;font-family:var(--serif);font-style:italic;font-size:19px;color:var(--soft);opacity:.55;transition:opacity .5s,color .5s,text-shadow .5s}
+#switch button.act{opacity:1;color:#ffe9f4;text-shadow:0 0 14px rgba(255,79,163,.9)}
+#switch i{width:3px;height:3px;border-radius:50%;background:var(--pink);box-shadow:0 0 6px var(--pink)}
 .layer{position:fixed;inset:0;pointer-events:none;overflow:hidden}
 .k{position:absolute;pointer-events:none;filter:drop-shadow(0 0 7px currentColor);transform:translate(-50%,-50%) rotate(var(--r));animation:kpop .55s cubic-bezier(.2,1.5,.4,1) both,kfade var(--life) ease-in .55s forwards}
 .k svg{width:100%;height:100%}
@@ -60,8 +75,8 @@ svg{display:block}
 #fin.show{opacity:.85;visibility:visible}
 .msg{position:fixed;z-index:6;width:250px;margin-left:-125px;text-align:center;font-family:var(--serif);font-style:italic;font-size:21px;line-height:1.3;color:#ffe3f1;text-shadow:0 0 14px var(--pink),0 0 2px #000;pointer-events:none;animation:msg 4.6s ease forwards}
 @keyframes msg{0%{opacity:0;filter:blur(6px);transform:translateY(8px)}12%{opacity:1;filter:blur(0);transform:none}80%{opacity:1}100%{opacity:0;transform:translateY(-14px)}}
-#fifteen{position:fixed;z-index:6;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 62px);text-align:center;padding:0 40px;font-family:var(--serif);font-style:italic;font-size:19px;color:var(--rose);text-shadow:0 0 12px rgba(255,79,163,.8);opacity:0;pointer-events:none;transition:opacity 1.6s}
-#fifteen.on{opacity:1}
+#fifteen,#nolimit{position:fixed;z-index:6;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 62px);text-align:center;padding:0 40px;font-family:var(--serif);font-style:italic;font-size:19px;color:var(--rose);text-shadow:0 0 12px rgba(255,79,163,.8);opacity:0;pointer-events:none;transition:opacity 1.6s}
+#fifteen.on,#nolimit.on{opacity:1}
 
 /* overlays */
 .ov{position:fixed;inset:0;background:var(--bg);opacity:0;visibility:hidden;transition:opacity .9s ease,visibility 0s .9s;overflow-y:auto;-webkit-overflow-scrolling:touch}
@@ -121,16 +136,21 @@ h1.head{font-family:var(--serif);font-style:italic;font-weight:400;font-size:34p
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
 <symbol id="kiss" viewBox="0 0 100 62"><path fill="currentColor" d="M6 29C20 16 36 11 44 19C47 15 53 15 56 19C64 11 80 16 94 29C78 28 64 29 50 27C36 29 22 28 6 29Z"/><path fill="currentColor" d="M9 33C28 36 72 36 91 33C84 50 68 59 50 59C32 59 16 50 9 33Z"/></symbol>
 <symbol id="heart" viewBox="0 0 24 24"><path fill="currentColor" d="M12 21C5 15.5 2 12 2 8.5C2 5.5 4.3 3.5 7 3.5C9 3.5 11 4.6 12 6.5C13 4.6 15 3.5 17 3.5C19.7 3.5 22 5.5 22 8.5C22 12 19 15.5 12 21Z"/></symbol>
+<g id="hand" fill="none" stroke-linecap="round" stroke-linejoin="round"><g stroke="currentColor"><path d="M16 82H33" stroke-width="18"/><path d="M15 76L11 64M21 74L18 56M27 73L26 52M33 74L34 56M37 83L45 72" stroke-width="7"/></g><g stroke="#050505"><path d="M16 82H33" stroke-width="14.4"/><path d="M15 76L11 64M21 74L18 56M27 73L26 52M33 74L34 56M37 83L45 72" stroke-width="3.4"/></g></g>
+<symbol id="hug" viewBox="0 6 100 92"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="44" r="26" stroke-width="3.4" fill="currentColor" fill-opacity=".12"/><path d="M37 40Q41.5 34 46 40M54 40Q58.5 34 63 40M40 52Q50 61 60 52" stroke-width="3"/></g><circle cx="33" cy="48" r="3" fill="currentColor" opacity=".35"/><circle cx="67" cy="48" r="3" fill="currentColor" opacity=".35"/><use href="#hand"/><use href="#hand" transform="translate(100 0) scale(-1 1)"/></symbol>
 </defs></svg>
 
 <div id="amb"></div><div id="glow"></div>
 
 <div id="cv" aria-label="kiss canvas, tap anywhere"></div>
+<div id="hv" class="hid" aria-label="hug canvas, tap anywhere"></div><div class="layer" id="hl"></div>
 <div class="ui" id="hint"><span class="serif">touch anywhere.</span></div>
+<div class="ui" id="switch"><button id="mk" class="act">for kisses</button><i></i><button id="mh">for hugs</button></div>
 <div class="ui corner" id="hc"><button id="hcb" class="corner" aria-label="let me take care of you"><svg><use href="#heart"/></svg></button></div>
 <div class="ui" id="bot"><button id="more">there’s more, my love.</button><div id="count">kisses collected: 0</div></div>
 <div class="ui corner" id="fin"><button id="finb" class="corner" aria-label="one last thing"><svg><use href="#heart"/></svg></button></div>
 <div id="fifteen">that’s fifteen. i still haven’t run out, princess.</div>
+<div id="nolimit">that’s as many as you need. there isn’t a limit.</div>
 
 <section class="ov" id="note" aria-label="a little note">
 <div class="layer" id="nk" style="z-index:2"></div>
@@ -174,8 +194,8 @@ const $=s=>document.querySelector(s),RM=matchMedia('(prefers-reduced-motion: red
 const rnd=(a,b)=>a+Math.random()*(b-a),sleep=ms=>new Promise(r=>setTimeout(r,RM?Math.min(ms,300):ms));
 const pinks=['#ff4fa3','#ff4fa3','#ff6bb5','#ff8fc8','#ff3d95','#e879c9','#b78bfa'];
 const cv=$('#cv'),count=$('#count');
-let n=0,nextSp=3,spI=0,seen={note:0,comfort:0},timeOk=false,tok=0,started=false;
-const spMsgs=["one for your forehead.","another because i miss you.","this one’s staying right here.","a hundred more wouldn’t be enough.","this is me kissing it better.","you deserve something soft today, my baby.","if i were there, i’d be taking care of you right now."];
+let n=0,nextSp=3,spI=0,seen={note:0,comfort:0},timeOk=false,tok=0,started=false,nh=0,mode='k',gone={k:0,h:0};
+const kissPool=["one for your forehead.","another because i miss you.","this one’s staying right here.","a hundred more wouldn’t be enough.","this is me kissing it better.","you deserve something soft today, my baby.","if i were there, i’d be taking care of you right now.","this one’s for your hands. they do so much.","one on your cheek, because i can.","i’ve saved the best ones for you.","for your tired eyes, my love.","this one is just for no reason.","a kiss for every time you didn’t complain.","for your shoulder. you carry a lot.","one for the end of a long day.","this is the gentle kind, princess.","you’re kissed. that’s the rule now.","for your nose, obviously.","i’m not done yet, maanya.","this one says i’m proud of you."];
 
 /* ambient motes */
 if(!RM){const a=$('#amb');for(let i=0;i<20;i++){const e=document.createElement('i'),s=rnd(1,2.6);e.style.cssText=`left:${rnd(0,100)}%;top:${rnd(30,100)}%;width:${s}px;height:${s}px;--d:${rnd(9,18)}s;--dl:${rnd(0,10)}s;--x:${rnd(-30,30)}px`;a.appendChild(e)}}
@@ -195,10 +215,10 @@ function kiss(layer,x,y,o={}){
  return el}
 function say(t,x,y){const m=document.createElement('div');m.className='msg';m.textContent=t;m.style.left=Math.min(Math.max(x,140),innerWidth-140)+'px';m.style.top=Math.max(y-90,70)+'px';document.body.appendChild(m);setTimeout(()=>m.remove(),4700)}
 function tap(x,y){
- $('#hint').classList.add('gone');
+ $('#hint').classList.add('gone');gone.k=1;
  const hit=[...cv.querySelectorAll('.sp:not(.used)')].find(k=>Math.hypot(k._x-x,k._y-y)<46);
  if(hit){hit.classList.add('used');say(hit._m,hit._x,hit._y)}
- let sp=null;if(!hit&&n+1>=nextSp){sp=spMsgs[spI++%spMsgs.length];nextSp=n+1+4+(Math.random()*3|0)}
+ let sp=null;if(!hit&&n+1>=nextSp){sp=pick('kiss',kissPool)[0];nextSp=n+1+4+(Math.random()*3|0)}
  kiss(cv,x,y,{sp});
  n++;count.textContent='kisses collected: '+n;count.classList.remove('tick');void count.offsetWidth;count.classList.add('tick');
  if(n===15){const f=$('#fifteen');f.classList.add('on');setTimeout(()=>f.classList.remove('on'),5500)}
@@ -206,7 +226,50 @@ function tap(x,y){
 cv.addEventListener('pointerdown',e=>{e.preventDefault();tap(e.clientX,e.clientY)});
 cv.addEventListener('contextmenu',e=>e.preventDefault());
 
-function chk(){if((n>=10&&timeOk)||(seen.note&&seen.comfort)||n>=30)$('#fin').classList.add('show')}
+/* hugs: press and hold */
+const hv=$('#hv'),hl=$('#hl'),hint=$('#hint');
+const hugCols=['#ff4fa3','#ff6bb5','#ff8fc8','#ff3d95','#e879c9','#b78bfa'];
+function setCount(){count.textContent=mode==='k'?'kisses collected: '+n:'hugs given: '+nh}
+function switchMode(m){if(m===mode)return;mode=m;
+ cv.classList.toggle('hid',m==='h');hv.classList.toggle('hid',m==='k');
+ $('#mk').classList.toggle('act',m==='k');$('#mh').classList.toggle('act',m==='h');
+ hint.firstElementChild.textContent=m==='k'?'touch anywhere.':'tap for a hug.';
+ hint.classList.toggle('gone',!!gone[m]);setCount()}
+$('#mk').onclick=()=>switchMode('k');$('#mh').onclick=()=>switchMode('h');
+function hug(x,y){
+ const q=Math.random(),type=q<.3?'n':q<.52?'t':q<.76?'L':'b',L=type==='L';
+ const col=hugCols[Math.random()*hugCols.length|0],rot=rnd(-12,12),s=type==='t'?rnd(26,36):L?rnd(150,200):rnd(52,72);
+ const el=document.createElement('div');
+ el.style.cssText=`position:absolute;left:${x}px;top:${y}px;width:${s}px;height:${s*.92}px;color:${col};opacity:0;pointer-events:none;filter:drop-shadow(0 0 ${L?9:5}px currentColor) drop-shadow(0 0 ${L?24:11}px currentColor)`;
+ el.innerHTML='<svg viewBox="0 0 100 92" width="100%" height="100%"><use href="#hug"/></svg>';
+ hl.appendChild(el);
+ while(hl.children.length>70)hl.firstChild.remove();
+ if(type!=='t'&&!RM){const r=document.createElement('div');r.className='rip';r.style.left=x+'px';r.style.top=y+'px';hl.appendChild(r);setTimeout(()=>r.remove(),950)}
+ sparks(hl,x,y,type==='t'?4:7);
+ if(RM){el.style.opacity=.85;el.style.transform=`translate(-50%,-50%) rotate(${rot}deg)`;setTimeout(()=>el.remove(),7000);return}
+ const T=(ty,sc)=>`translate(-50%,-50%) translateY(${ty}px) rotate(${rot}deg) scale(${sc})`;
+ let f,d;
+ if(type==='t'){d=3000;f=[{transform:T(0,0),opacity:0},{transform:T(0,1.3),opacity:1,offset:.12},{transform:T(-8,1),opacity:1,offset:.25},{transform:T(-rnd(60,100),.9),opacity:0}]}
+ else if(L){d=4800;f=[{transform:T(0,.3),opacity:0},{transform:T(-10,1),opacity:.95,offset:.3},{transform:T(-26,1.1),opacity:.75,offset:.72},{transform:T(-50,1.22),opacity:0}]}
+ else if(type==='b'){d=2600;f=[{transform:T(0,0),opacity:0},{transform:T(0,1.3),opacity:1,offset:.14},{transform:T(-6,1),opacity:1,offset:.3},{transform:T(-22,1.25),opacity:0}];setTimeout(()=>burst(x,y-10),520)}
+ else{d=4400;f=[{transform:T(0,0),opacity:0},{transform:T(0,1.3),opacity:1,offset:.1},{transform:T(-8,1),opacity:1,offset:.2},{transform:T(-rnd(110,160),1),opacity:.8,offset:.7},{transform:T(-rnd(160,210),.95),opacity:0}]}
+ el.animate(f,{duration:d,easing:'ease-out',fill:'forwards'}).onfinish=()=>el.remove()}
+function burst(x,y){
+ for(let i=0;i<10;i++){
+  const h=document.createElement('div'),s=rnd(9,17),a=Math.random()*6.283,dist=rnd(38,95),dx=Math.cos(a)*dist,dy=Math.sin(a)*dist-20;
+  h.style.cssText=`position:absolute;left:${x}px;top:${y}px;width:${s}px;height:${s}px;color:${hugCols[Math.random()*hugCols.length|0]};opacity:0;pointer-events:none;filter:drop-shadow(0 0 6px currentColor)`;
+  h.innerHTML='<svg viewBox="0 0 24 24" width="100%" height="100%"><use href="#heart"/></svg>';
+  hl.appendChild(h);
+  h.animate([{transform:'translate(-50%,-50%) scale(.2)',opacity:1},{transform:`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) scale(1)`,opacity:1,offset:.4},{transform:`translate(calc(-50% + ${dx*1.15}px),calc(-50% + ${dy-70}px)) scale(.7)`,opacity:0}],{duration:rnd(1500,2300),easing:'ease-out',fill:'forwards'}).onfinish=()=>h.remove()}}
+function hugTap(e){
+ e.preventDefault();hint.classList.add('gone');gone.h=1;
+ hug(e.clientX,e.clientY);nh++;setCount();count.classList.remove('tick');void count.offsetWidth;count.classList.add('tick');
+ if(nh===8){const f=$('#nolimit');f.classList.add('on');setTimeout(()=>f.classList.remove('on'),6500)}
+ chk()}
+hv.addEventListener('pointerdown',hugTap);
+hv.addEventListener('contextmenu',e=>e.preventDefault());
+
+function chk(){if(((n+nh)>=12&&timeOk)||(seen.note&&seen.comfort)||n>=30||nh>=30)$('#fin').classList.add('show')}
 
 /* overlays */
 const on=(el,v)=>$(el).classList.toggle('on',v);
@@ -218,21 +281,32 @@ $('#cback').onclick=()=>on('#comfort',false);
 let gameT=null;
 function sentences(t){return t.split(/(?<=[.!?])\s+/).map((s,i)=>`<span style="animation-delay:${.4+i*1.5}s">${s} </span>`).join('')}
 function openSub(html,onClose){const c=$('#subc');c.innerHTML=html;on('#sub',true);$('#sub').scrollTop=0;$('#sback').onclick=()=>{on('#sub',false);clearInterval(gameT);onClose&&onClose()}}
-const gameMsgs=["there you are, princess.","you’re doing better than you think.","still the only thing on my mind.","breathe, my love. i’ve got you.","one for every cramp you’ve survived.","i’m so proud of you."];
+const store={};
+function pick(key,arr,k=1){
+ let seen;try{seen=JSON.parse(localStorage.getItem('lp_'+key)||'[]')}catch(e){seen=store[key]||[]}
+ let pool=arr.map((_,i)=>i).filter(i=>!seen.includes(i));const out=[];
+ while(out.length<k){if(!pool.length){pool=arr.map((_,i)=>i).filter(i=>!out.includes(i));seen=[]}
+  const j=pool.splice(Math.random()*pool.length|0,1)[0];out.push(j);seen.push(j)}
+ store[key]=seen;try{localStorage.setItem('lp_'+key,JSON.stringify(seen))}catch(e){}
+ return out.map(i=>arr[i])}
+const comfortPool=["come here, my baby. you don’t have to explain anything. take a breath, drop your shoulders, and let today be slower. i’m proud of you.","today you’re allowed to do the bare minimum. i mean it. i’ll still think you’re amazing.","put one hand on your stomach and breathe out slowly. that’s me, holding you. i wish it were actually me.","find the softest blanket you own, my love. get under it. i’ll be right here in spirit, being annoyingly protective.","you’ve been strong all week. you can stop for a bit. nobody is keeping score.","if it hurts, it hurts. you don’t have to be brave about it for me.","go lie down, maanya. i’ll wait. there’s nowhere i’d rather be than wherever you are right now.","rest isn’t laziness. your body is working hard. let it.","i know you’re tired of feeling like this. it will pass, and i’ll be here the whole time it does.","drink some water. eat something warm. then rest. that’s the whole plan for today.","unclench your jaw. drop your shoulders. you were holding them up by your ears, weren’t you.","close your eyes for a minute. there’s nothing to fix right now. just you, and a very long hug from me.","you don’t need to be productive today, princess. being you is already plenty.","i’d give you my hoodie right now if i could. the warm one. you’d keep it, obviously.","slow day. soft day. that’s all it needs to be.","heating pad, blanket, your favourite show. i fully support this schedule.","i can’t take the pain away, but i can promise you’re not going through it alone.","it’s okay to cancel things, say no, and stay in. you’re looking after yourself, and that’s a good thing.","whatever you’re feeling today is valid, even if it makes no sense. especially if it makes no sense.","come lean on me for a bit. i’ve got you. take as long as you need.","be as quiet as you want to be. i’m happy just knowing you’re okay.","you’re doing so well, my love. even when it feels like you’re doing nothing."];
+const reassurePool=["you never have to earn softness from me. you don’t have to be cheerful to be loved, and you don’t have to hide the difficult days. i’m here for the lovely days and the messy ones, too.","you’re not too much, and you’re not a burden. you’re my favourite person. that doesn’t change on bad days.","if you’re cranky today, that’s fine. i’m not going anywhere.","you don’t have to be easy to love. you already are, and i’d choose you at your worst too.","nothing about today changes how i see you. if anything, i just want to take better care of you.","i’m not keeping a list of the days you were tired or moody. i’m keeping every day i got to be with you.","you never have to apologise to me for feeling bad. just let me be here.","i love you the same on the days you’re glowing and the days you’re in sweatpants crying about nothing.","you don’t have to earn my patience. you already have all of it.","whatever mood you’re in today, i like you in it.","you are not difficult. you’re a person having a hard day, and i’m lucky to be the one who gets to care about you through it.","i’m still here. i’m still yours. nothing about this week makes me love you less.","you’re allowed to need things, maanya. needing me is one of my favourite things about us.","you’re safe with me, even when you’re moody, quiet, or a bit chaotic.","i don’t need you to be okay. i just need you to know i’m staying.","being loved shouldn’t feel like effort, my baby. rest easy. you’re loved either way.","you matter to me so much that it’s a little ridiculous. today is no exception.","it’s okay if you don’t feel pretty or put together today. you’re still the one i’m thinking about.","you’re not behind on anything. you’re exactly where you need to be: resting, and loved.","even your grumpy face is my favourite. i’ve seen it. it’s adorable.","if you’re worried you’re being annoying, you’re not. text me anything. i’ll answer anything.","there is nothing about you i’d want to swap out. not today, not ever, my love."];
+const smilePool=["official diagnosis: chronically on my mind.","your only job today is to rest. i’ll handle the adoring.","if cuddles were medicine, i’d have you on a strict prescription.","i would fight your cramps in a parking lot. respectfully.","update from me: still thinking about you. no new developments.","i’ve just been informed that you’re the best part of my day. the source is me.","the snack budget for today is unlimited. i’ve decided this on your behalf.","if the cramps give you any trouble, tell them i know where they live.","you could ask me for anything today and i’d say yes before you finished the sentence.","reminder: you’re not allowed to feel guilty about eating the whole bar of chocolate.","i’m not saying you’re my favourite person, but i’ve stopped looking for alternatives.","breaking news: you’re still the best thing that’s happened to me.","i miss you a normal amount, which is to say, constantly.","i’d trade my last fry for you. that’s how serious this is.","this is your sign to nap with zero guilt.","i’m on standby for emergency cuddles. just say the word, princess.","scientists (me) confirm: you’re cute even when you’re grumpy.","if you’re reading this, you’re legally required to hydrate.","your shirt is allowed to be a blanket today. all rules suspended.","i’d carry your heating pad across the city if that’s what it took.","reminder that i think you’re hilarious, even when you’re not trying.","you’ve officially unlocked: do nothing and still be adored.","i bet you’re smiling a little right now. i’ll take it.","today’s forecast: soft, snacky, and mostly cuddles."];
+const gamePool=["there you are, princess.","you’re doing better than you think.","still the only thing on my mind.","breathe, my love. i’ve got you.","one for every cramp you’ve survived.","i’m so proud of you.","keep going, maanya. i like watching you smile.","you’re allowed to just have fun right now.","nice catch. you’re good at everything.","nothing to fix, nothing to do. just hearts.","i’d be right next to you doing this, losing on purpose.","look at you, distracted and doing great.","every heart here is for you, my baby.","great reflexes for someone this tired.","no one’s keeping score. except me, and you’re winning.","i’m smiling at my phone thinking of you doing this.","take your time. there are plenty more where those came from.","easy day. soft hands. quick hearts.","you make even this look cute.","one more for the road, my love.","it’s okay to be a little silly today.","i hope your mind feels a bit lighter now."];
 function game(){
  openSub('<div id="gwrap"></div><div id="gnote">catch the hearts, maanya.</div>');
- const w=$('#gwrap'),g=$('#gnote');let c=0,mi=0,gt;
+ const w=$('#gwrap'),g=$('#gnote');let c=0,mi=0,gt;const gm=pick('game',gamePool,8);
  const spawn=()=>{const h=document.createElement('div'),s=rnd(30,48);h.className='fh';h.style.cssText=`left:${rnd(6,86)}%;width:${s}px;height:${s}px;--t:${rnd(6,9.5)}s;--s:${rnd(-30,30)}px`;if(RM)h.style.top=rnd(18,80)+'%';
   h.innerHTML='<svg><use href="#heart"/></svg>';
   h.addEventListener('animationend',()=>h.remove());
   h.addEventListener('pointerdown',e=>{e.stopPropagation();const r=h.getBoundingClientRect();sparks(w,r.left+r.width/2,r.top+r.height/2,9);h.remove();c++;
-   if(c%4===0){g.style.opacity=0;setTimeout(()=>{g.textContent=gameMsgs[mi++%gameMsgs.length];g.style.opacity=1;clearTimeout(gt);gt=setTimeout(()=>g.style.opacity=0,3200)},300)}});
+   if(c%4===0){g.style.opacity=0;setTimeout(()=>{g.textContent=gm[mi++%gm.length];g.style.opacity=1;clearTimeout(gt);gt=setTimeout(()=>g.style.opacity=0,3200)},300)}});
   w.appendChild(h)};
  spawn();gameT=setInterval(spawn,RM?1500:750)}
 function opt(k){
- if(k==='comfort')openSub(`<div class="inner"><div class="reveal">${sentences("come here, my baby. you don’t have to explain anything. take a breath, drop your shoulders, and let today be slower. i’m proud of you.")}</div></div>`);
- if(k==='reassure')openSub(`<div class="inner"><div class="reveal">${sentences("you never have to earn softness from me. you don’t have to be cheerful to be loved, and you don’t have to hide the difficult days. i’m here for the lovely days and the messy ones, too.")}</div></div>`);
- if(k==='smile')openSub('<div class="inner smile">'+["official diagnosis: chronically on my mind.","your only job today is to rest. i’ll handle the adoring.","if cuddles were medicine, i’d have you on a strict prescription.","i would fight your cramps in a parking lot. respectfully."].map((t,i)=>`<p style="animation-delay:${.3+i*1.3}s">${t}</p>`).join('')+'</div>');
+ if(k==='comfort')openSub(`<div class="inner"><div class="reveal">${sentences(pick('comfort',comfortPool)[0])}</div></div>`);
+ if(k==='reassure')openSub(`<div class="inner"><div class="reveal">${sentences(pick('reassure',reassurePool)[0])}</div></div>`);
+ if(k==='smile')openSub('<div class="inner smile">'+pick('smile',smilePool,4).map((t,i)=>`<p style="animation-delay:${.3+i*1.3}s">${t}</p>`).join('')+'</div>');
  if(k==='game')game()}
 document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>opt(b.dataset.o));
 
@@ -250,7 +324,7 @@ $('#fin').onclick=async()=>{
   const w=innerWidth,h=innerHeight;kiss(fk,rnd(24,w-24),rnd(40,h-40),{life:200,cap:46,quiet:i%3!==0});if(i%2)tinyHeart();i++},RM?900:650)};
 $('#final').addEventListener('pointerdown',e=>{if(e.target.closest('#restart'))return;kiss(fk,e.clientX,e.clientY,{life:200,cap:70})});
 $('#restart').onclick=()=>{tok++;on('#final',false);$('#restart').classList.remove('on');
- setTimeout(()=>{fk.innerHTML='';fh.innerHTML='';fl.className='';cv.innerHTML='';n=0;nextSp=3;spI=0;seen={note:0,comfort:0};timeOk=false;count.textContent='kisses collected: 0';
+ setTimeout(()=>{fk.innerHTML='';fh.innerHTML='';fl.className='';cv.innerHTML='';n=0;nh=0;nextSp=3;spI=0;seen={note:0,comfort:0};timeOk=false;hl.innerHTML='';gone={k:0,h:0};mode='h';switchMode('k');count.textContent='kisses collected: 0';
   $('#fin').classList.remove('show');$('#hint').classList.remove('gone');on('#comfort',false);on('#sub',false);on('#note',false);
   const it=$('#intro');it.classList.remove('off');it.querySelectorAll('.in').forEach(e=>{e.style.animation='none';void e.offsetWidth;e.style.animation=''});
   started=false;setTimeout(()=>timeOk=true,28000)},1900)};
